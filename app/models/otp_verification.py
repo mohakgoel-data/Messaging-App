@@ -12,13 +12,16 @@ class OTPPurpose(enum.Enum):
     RESET_PASSWORD = "RESET_PASSWORD"
     CHANGE_EMAIL = "CHANGE_EMAIL"
 
-
 class OTPVerification(Base):
     __tablename__ = "otp_verifications"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.user_id"), nullable=False)
+    # optional during signup
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.user_id"), nullable=True)
+
+    # needed before user exists
+    email = Column(String, nullable=False, index=True)
 
     otp_hash = Column(String, nullable=False)
 
